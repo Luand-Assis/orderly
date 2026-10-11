@@ -31,10 +31,18 @@ namespace Orderly.Domain.Entities
             };
         }
 
+        public void ReporEstoque(int quantidade)
+        {
+            if (quantidade <= 0)
+                throw new ExceptionProdutoDomain("Quantidade invalida para repor estoque");
+
+            Estoque += quantidade;
+        }
+
         public void AtualizarEstoque(int quantidade)
         {
             if (Estoque < quantidade || quantidade <= 0)
-                throw new ExceptionProdutoDomain("Quantidade maior que estoque");
+                throw new ExceptionProdutoDomain("Quantidade invalida para atualizar estoque");
             
             Estoque -= quantidade;
         }
