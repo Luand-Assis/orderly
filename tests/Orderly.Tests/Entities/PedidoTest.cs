@@ -151,4 +151,28 @@ public class PedidoTest
 
         Assert.Throws<ExceptionPedidoDomain>(() => pedido.Enviar());
     }
+    
+    [Fact]
+    public void Cancelar_StatusPendente_DeveMudarParaCancelado()
+    {
+        var pedido = CriarPedidoValido();
+
+        pedido.Cancelar();
+
+        Assert.Equal(StatusPedido.Cancelado, pedido.Status);
+    }
+    
+    [Fact]
+    public void Cancelar_StatusEntregue_DeveLancarExcecao()
+    {
+        var pedido = CriarPedidoValido();
+
+        pedido.Pagar();
+        pedido.AprovarPagamento();
+        pedido.IniciarPreparacao();
+        pedido.Enviar();
+        pedido.Entregar();
+
+        Assert.Throws<ExceptionPedidoDomain>(() => pedido.Cancelar());
+    }
 }
