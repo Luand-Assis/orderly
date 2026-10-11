@@ -33,7 +33,7 @@ namespace Orderly.Domain.Entities
 
         public void AtualizarEstoque(int quantidade)
         {
-            if (Estoque < quantidade)
+            if (Estoque < quantidade || quantidade <= 0)
                 throw new ExceptionProdutoDomain("Quantidade maior que estoque");
             
             Estoque -= quantidade;
