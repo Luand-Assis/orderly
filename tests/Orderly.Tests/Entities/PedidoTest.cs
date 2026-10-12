@@ -72,15 +72,19 @@ public class PedidoTest
 
         Assert.Equal(StatusPedido.Confirmado, pedido.Status);
     }
-
+    
     [Fact]
-    public void RecusarPagamento_StatusProcessando_DeveMudarParaPagamentoRecusado()
+    public void RecusarPagamento_DeveDevolverEstoqueDosProdutos()
     {
-        var pedido = CriarPedidoValido();
+        var produto = Produto.CriarProduto("Produto 1", 100m, 10);
+        var produtos = new List<Produto> { produto, produto, produto };
+
+        var pedido = Pedido.CriarPedido(produtos);
 
         pedido.Pagar();
         pedido.RecusarPagamento();
 
+        Assert.Equal(10, produto.Estoque);
         Assert.Equal(StatusPedido.PagamentoRecusado, pedido.Status);
     }
 
@@ -153,12 +157,16 @@ public class PedidoTest
     }
     
     [Fact]
-    public void Cancelar_StatusPendente_DeveMudarParaCancelado()
+    public void Cancelar_ProdutosRepetidos_DeveDevolverQuantidadeCorretaAoEstoque()
     {
-        var pedido = CriarPedidoValido();
+        var produto = Produto.CriarProduto("Produto 1", 100m, 10);
+        var produtos = new List<Produto> { produto, produto, produto };
+
+        var pedido = Pedido.CriarPedido(produtos);
 
         pedido.Cancelar();
 
+        Assert.Equal(10, produto.Estoque);
         Assert.Equal(StatusPedido.Cancelado, pedido.Status);
     }
     
