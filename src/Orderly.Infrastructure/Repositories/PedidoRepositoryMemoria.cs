@@ -18,5 +18,11 @@ namespace Orderly.Infrastructure.Repositories
             _pedidos.TryGetValue(id, out var pedido);
             return Task.FromResult(pedido);
         }
+
+        public Task AtualizarAsync(Pedido pedido, CancellationToken cancellationToken = default)
+        {
+            _pedidos[pedido.Id] = pedido;
+            return Task.CompletedTask;
+        }
     }
 }

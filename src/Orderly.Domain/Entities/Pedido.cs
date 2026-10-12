@@ -5,12 +5,12 @@ namespace Orderly.Domain.Entities
 {
     public class Pedido
     {
-        public Guid Id  { get; private set; }
+        public Guid Id { get; private set; }
         public List<Produto> Produtos { get; private set; }
         public decimal ValorTotal { get; private set; }
         public StatusPedido Status { get; private set; }
         public DateTime DataPedido { get; private set; }
-        
+
         private Pedido() { }
 
         public static Pedido CriarPedido(List<Produto> produtos)
@@ -18,14 +18,7 @@ namespace Orderly.Domain.Entities
             if (produtos is null || produtos.Count == 0)
                 throw new ExceptionPedidoDomain("Nenhum produto selecionado");
 
-            var itensAgrupados = produtos
-                .GroupBy(p => p.Id)
-                .Select(grupo => new
-                {
-                    Produto = grupo.First(),
-                    Quantidade = grupo.Count()
-                })
-                .ToList();
+            var itensAgrupados = AgruparProdutos(produtos);
 
             foreach (var item in itensAgrupados)
             {
@@ -69,6 +62,7 @@ namespace Orderly.Domain.Entities
             if (Status != StatusPedido.Processando)
                 throw new ExceptionPedidoDomain("Ciclo de vida do Status indisponivel");
 
+            DevolverEstoque();
             Status = StatusPedido.PagamentoRecusado;
         }
 
@@ -98,19 +92,36 @@ namespace Orderly.Domain.Entities
 
         public void Cancelar()
         {
-            if (Status is not (StatusPedido.Pendente or 
-                            StatusPedido.Processando or
-                            StatusPedido.Confirmado or
-                            StatusPedido.Preparacao))
+            if (Status is not (StatusPedido.Pendente or
+                StatusPedido.Processando or
+                StatusPedido.Confirmado or
+                StatusPedido.Preparacao))
                 throw new ExceptionPedidoDomain("Ciclo de vida do Status indisponivel");
-            
+
+            DevolverEstoque();
             Status = StatusPedido.Cancelado;
+        }
+
+        private void DevolverEstoque()
+        {
+            foreach (var item in AgruparProdutos(Produtos))
+            {
+                item.Produto.ReporEstoque(item.Quantidade);
+            }
         }
 
         private static decimal CalcularValorTotal(List<Produto> produtos)
         {
             return produtos
                 .Sum(p => p.Preco);
+        }
+        
+        public static List<(Produto Produto, int Quantidade)> AgruparProdutos(List<Produto> produtos)
+        {
+            return produtos
+                .GroupBy(p => p.Id)
+                .Select(grupo => (Produto: grupo.First(), Quantidade: grupo.Count()))
+                .ToList();
         }
     }
 }
