@@ -4,7 +4,7 @@ namespace Orderly.Application.UseCases.Pedidos.Dto;
 
 public record ConsultaPedidoDto(
     Guid Id,
-    StatusPedido Status,
+    string Status,
     decimal ValorTotal,
     DateTime DataHora,
     List<ConsultaItensDto> Itens);

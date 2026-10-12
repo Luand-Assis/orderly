@@ -26,7 +26,7 @@ namespace Orderly.Application.UseCases.Pedidos
                 consultaItensDto.Add(listaDeItem);
             }
             
-            return new ConsultaPedidoDto(pedido.Id, pedido.Status, pedido.ValorTotal, pedido.DataPedido, consultaItensDto);
+            return new ConsultaPedidoDto(pedido.Id, pedido.Status.ToString(), pedido.ValorTotal, pedido.DataPedido, consultaItensDto);
         }
     }
 }
