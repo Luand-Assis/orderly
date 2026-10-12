@@ -1,22 +1,30 @@
+using Orderly.Application.Interfaces;
+using Orderly.Application.UseCases.Pedidos;
+using Orderly.Application.UseCases.Produtos;
+using Orderly.Infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddSingleton<IProdutoRepository, ProdutoRepositoryMemoria>();
+builder.Services.AddSingleton<IPedidoRepository, PedidoRepositoryMemoria>();
+
+builder.Services.AddScoped<CadastrarProdutoUseCase>();
+builder.Services.AddScoped<CriarPedidoUseCase>();
+builder.Services.AddScoped<PagarPedidoUseCase>();
+builder.Services.AddScoped<CancelarPedidoUseCase>();
+builder.Services.AddScoped<ConsultarPedidoUseCase>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwaggerUI(options =>
+        options.SwaggerEndpoint("/openapi/v1.json",  "Orderly.Api v1"));
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 app.MapControllers();
 
