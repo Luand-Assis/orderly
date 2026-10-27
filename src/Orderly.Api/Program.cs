@@ -12,6 +12,8 @@ builder.Services.AddSingleton<IProdutoRepository, ProdutoRepositoryMemoria>();
 builder.Services.AddSingleton<IPedidoRepository, PedidoRepositoryMemoria>();
 
 builder.Services.AddScoped<CadastrarProdutoUseCase>();
+builder.Services.AddScoped<ConsultarProdutoUseCase>();
+
 builder.Services.AddScoped<CriarPedidoUseCase>();
 builder.Services.AddScoped<PagarPedidoUseCase>();
 builder.Services.AddScoped<CancelarPedidoUseCase>();
