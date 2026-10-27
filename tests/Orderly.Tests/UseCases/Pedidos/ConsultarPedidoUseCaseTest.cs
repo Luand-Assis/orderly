@@ -33,7 +33,7 @@ public class ConsultarPedidoUseCaseTest
         
         Assert.NotNull(resultado);
         Assert.Equal(pedido.Id, resultado.Id);
-        Assert.Equal(pedido.Status, resultado.Status);
+        Assert.Equal(pedido.Status.ToString(), resultado.Status);
         Assert.Equal(300m, resultado.ValorTotal);
         Assert.Equal(pedido.DataPedido, resultado.DataHora);
         Assert.Equal(2, resultado.Itens.Count);
