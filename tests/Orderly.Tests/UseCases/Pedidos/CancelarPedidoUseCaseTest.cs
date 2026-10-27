@@ -55,6 +55,6 @@ public class CancelarPedidoUseCaseTest
         
         var useCase = new CancelarPedidoUseCase(pedidoRepository.Object);
         
-        await Assert.ThrowsAsync<ExceptionPedidoApplication>(() => useCase.ExecutarAsync(pedido.Id));
+        await Assert.ThrowsAsync<NotFoundException>(() => useCase.ExecutarAsync(pedido.Id));
     }
 }

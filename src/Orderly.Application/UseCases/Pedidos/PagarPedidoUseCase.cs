@@ -11,7 +11,7 @@ namespace Orderly.Application.UseCases.Pedidos
             var item = await pedidoRepository.BuscarPorIdAsync(pedidoId, cancellationToken);
 
             if (item == null)
-                throw new ExceptionPedidoApplication("Pedido indisponivel");
+                throw new NotFoundException("Pedido indisponivel");
 
             item.Pagar();
 

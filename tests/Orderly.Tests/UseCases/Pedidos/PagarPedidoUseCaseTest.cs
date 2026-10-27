@@ -55,6 +55,6 @@ public class PagarPedidoUseCaseTest
         
         var useCase = new PagarPedidoUseCase(pedidoRepository.Object);
         
-        await Assert.ThrowsAsync<ExceptionPedidoApplication>(() => useCase.ExecutarAsync(pedido.Id));
+        await Assert.ThrowsAsync<NotFoundException>(() => useCase.ExecutarAsync(pedido.Id));
     }
 }

@@ -11,7 +11,7 @@ namespace Orderly.Application.UseCases.Produtos
             var produto = await produtoRepository.BuscarPorIdAsync(id, cancellationToken);
             
             return produto is null
-                ? throw new ExceptionProdutoApplication("Produto invalido")
+                ? throw new NotFoundException("Produto invalido")
                 : new ItemProdutoDto(produto.Id, produto.Nome, produto.Preco, produto.Estoque);
         }
     }

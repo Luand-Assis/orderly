@@ -13,7 +13,7 @@ namespace Orderly.Application.UseCases.Pedidos
             var pedido = await pedidoRepository.BuscarPorIdAsync(pedidoId, cancellationToken);
 
             if (pedido == null)
-                throw new ExceptionPedidoApplication("Pedido indisponivel");
+                throw new NotFoundException("Pedido indisponivel");
 
             List<ConsultaItensDto> consultaItensDto = new();
 

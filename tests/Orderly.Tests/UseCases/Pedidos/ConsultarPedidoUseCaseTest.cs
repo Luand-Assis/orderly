@@ -56,7 +56,7 @@ public class ConsultarPedidoUseCaseTest
 
         var useCase = new ConsultarPedidoUseCase(pedidoRepository.Object);
         
-        var excecao = await Assert.ThrowsAsync<ExceptionPedidoApplication>(() => useCase.ExecutarAsync(pedidoId));
+        var excecao = await Assert.ThrowsAsync<NotFoundException>(() => useCase.ExecutarAsync(pedidoId));
 
         Assert.Equal("Pedido indisponivel", excecao.Message);
     }
